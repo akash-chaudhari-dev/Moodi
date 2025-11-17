@@ -8,6 +8,7 @@ import random
 from data.names import names as names_list  # list of names
 from data.dates import dates as dob_list  # list of dates
 from data.phone import phone as phone_list  # list of phone numbers
+from data.gender import genders as gender_list
 
 from Tools.generate_email import generate_temp_email
 from Tools.get_otp import get_otp
@@ -332,6 +333,14 @@ while True:
 
         # Prepare random profile data early so we can verify page state after OTP verification
         random_name = random.choice(names_list)
+        index_of_name = names_list.index(random_name)
+
+        gender_of_random_name = gender_list[index_of_name]
+        if gender_of_random_name == "M":
+            Gender = "Male"
+        else:
+            Gender = "Female"
+
         random_dob = random.choice(dob_list)
         # dob_list entries expected as 'ddmmyyyy' or similar; build 'dd/mm/yyyy'
         random_dob = random_dob[:2] + "/" + random_dob[2:4] + "/" + random_dob[4:]
@@ -410,7 +419,7 @@ while True:
         # Use robust setter for date fields because some datepickers ignore plain send_keys
         set_date_field(driver, ["//input[@placeholder='DOB (dd/mm/yyyy)']", "//input[@name='dob']"], random_dob, "Date of Birth")
         fill_input(driver, ["//input[@placeholder='Phone']", "//input[@name='phone']"], random_phone, "Phone Number")
-        fill_input(driver, ["//input[@placeholder='Select or Enter Gender']", "//input[@name='gender']"], "Male", "Gender")
+        fill_input(driver, ["//input[@placeholder='Select or Enter Gender']", "//input[@name='gender']"], f"{Gender}", "Gender")
 
         safe_click(driver, ["//button[contains(text(),'NEXT')]"] , name="NEXT after Gender")
 
